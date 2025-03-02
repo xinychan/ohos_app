@@ -1,23 +1,43 @@
+import { Log } from 'feature';
+
+const TAG = 'IndexPage';
+const PAGE_NAME = 'HomePage';
+
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World';
+  private pathStack: NavPathStack = new NavPathStack();
+
+  aboutToAppear(): void {
+    Log.info(TAG, 'aboutToAppear');
+  }
+
+  aboutToDisappear(): void {
+    Log.info(TAG, 'aboutToDisappear');
+  }
+
+  onPageShow(): void {
+    Log.info(TAG, 'onPageShow');
+  }
+
+  onPageHide(): void {
+    Log.info(TAG, 'onPageHide');
+  }
 
   build() {
-    RelativeContainer() {
-      Text(this.message)
-        .id('HelloWorld')
-        .fontSize($r('app.float.page_text_font_size'))
-        .fontWeight(FontWeight.Bold)
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Center },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        })
-        .onClick(() => {
-          this.message = 'Welcome';
-        })
+    Navigation(this.pathStack) {
     }
-    .height('100%')
-    .width('100%')
+    .mode(NavigationMode.Stack)
+    .title('IndexPage')
+    .onAppear(() => {
+      Log.info(TAG, 'onAppear');
+      const info: NavPathInfo = new NavPathInfo(PAGE_NAME, null);
+      this.pathStack.pushPath(info);
+    })
+    .onDisAppear(() => {
+      // 页面显示和退出只执行 onPageShow/onPageHide，不执行 onDisAppear
+      // 只在整个页面销毁前执行 onDisAppear==>aboutToDisappear
+      Log.info(TAG, 'onDisAppear');
+    })
   }
 }
