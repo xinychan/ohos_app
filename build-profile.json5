@@ -35,6 +35,14 @@
           ]
         }
       ]
+    },
+    {
+      "name": "feature",
+      "srcPath": "./feature",
+    },
+    {
+      "name": "common",
+      "srcPath": "./common",
     }
   ]
 }
